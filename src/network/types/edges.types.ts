@@ -1,5 +1,7 @@
 export type Edge = {
     from: string,
     to: string,
-    cost: number,
+    distance: number,
+    time: number,
+    isHighway?: boolean
 }

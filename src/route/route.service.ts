@@ -4,6 +4,7 @@ import { NetworkCustomRepository } from 'src/network/repositories/network.reposi
 import { findShortestPath } from 'src/common/dijkstra/dijkstra-service';
 import { Network } from 'src/network/entities/network.entity';
 import { PathResult } from 'src/common/interfaces/dijkstra-path-result';
+import { Preference } from './enums/preferences.enum';
 
 @Injectable()
 export class RouteService {
@@ -12,7 +13,8 @@ export class RouteService {
     private readonly networkCustomRepository: NetworkCustomRepository
   ) { }
   async optimizeEdge(id: string, optimizeRouteDto: OptimizeRouteDto) {
-    const { originNodeId, destinationNodeId, preference, avoidHighways } = optimizeRouteDto;
+    const { originNodeId, destinationNodeId, preference = Preference.SHORTEST, avoidHighways } = optimizeRouteDto;
+
     const network = await this.networkCustomRepository.findOneBy({ id });
 
     if (!network) {
@@ -20,39 +22,57 @@ export class RouteService {
       throw new NotFoundException(`Network not found`);
     }
 
-    const adjacencyMap = this.transformToAdjacencyMap(network);
+    const adjacencyMap = this.transformToAdjacencyMap(network, preference, avoidHighways);
+
+    this.verifyNodesExist(adjacencyMap, originNodeId, destinationNodeId);
+
     const result = findShortestPath(adjacencyMap, originNodeId, destinationNodeId);
 
-    this.verifyGraph(result, originNodeId, destinationNodeId, id);
-
-    return { body: result };
-  }
-
-  private transformToAdjacencyMap(network: Network): Record<string, Record<string, number>> {
-
-    const adjacencyMap: Record<string, Record<string, number>> = {};
-    for (const edge of network.edges) {
-
-      if (!adjacencyMap[edge.from]) {
-        adjacencyMap[edge.from] = {};
-      }
-      adjacencyMap[edge.from][edge.to] = edge.cost;
+    if (!result) {
+      this.logger.error(`No path found between nodes ${originNodeId} and ${destinationNodeId}`);
+      throw new NotFoundException('No path found between nodes');
     }
 
+    return {
+      preference: preference,
+      path: result.path,
+      cost: result.cost,
+      costType: preference === Preference.SHORTEST ? "distance" : "time",
+      avoidHighways: avoidHighways ?? false
+    }
+  }
+
+  private transformToAdjacencyMap(
+    network: Network,
+    preference: Preference,
+    avoidHighways?: boolean
+  ): Record<string, Record<string, number>> {
+    const adjacencyMap: Record<string, Record<string, number>> = {};
+    for (const edge of network.edges) {
+      const from = edge.from.toUpperCase();
+      const to = edge.to.toUpperCase();
+      let cost: number;
+
+      if (avoidHighways && edge.isHighway) {
+        cost = Infinity;
+      } else {
+        cost = preference === Preference.FASTEST ? edge.time : edge.distance;
+      }
+
+      if (!adjacencyMap[from]) adjacencyMap[from] = {};
+      adjacencyMap[from][to] = cost;
+
+      if (!adjacencyMap[to]) adjacencyMap[to] = {};
+      adjacencyMap[to][from] = cost;
+    }
     return adjacencyMap;
   }
 
-  private verifyGraph(result: string[] | PathResult, originNodeId: string, destinationNodeId: string, id: string): boolean {
-    if (
-      !result ||
-      (Array.isArray(result)
-        ? result.length === 0
-        : !result.path || result.path.length === 0)
-    ) {
-      this.logger.error(`No path found from ${originNodeId} to ${destinationNodeId} in network ${id}`);
-      throw new NotFoundException(`No path found in network`);
+  private verifyNodesExist(adjacencyMap: Record<string, Record<string, number>>, originNodeId: string, destinationNodeId: string): boolean {
+    if (!adjacencyMap[originNodeId] || !adjacencyMap[destinationNodeId]) {
+      this.logger.error(`Origin or destination node does not exist in the network`);
+      throw new NotFoundException('Origin or destination node does not exist in the network');
     }
-
     return true;
   }
 }

@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsPositive, IsString } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsBoolean, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class EdgeDto {
     @IsNotEmpty()
@@ -11,5 +12,17 @@ export class EdgeDto {
 
     @IsPositive()
     @IsNotEmpty()
-    cost: number;
+    distance: number;
+
+    @IsPositive()
+    @IsNotEmpty()
+    time: number;
+
+    @IsOptional()
+    @IsBoolean()
+    @Transform(({ value }) => {
+        if (typeof value === 'string') return value.toLowerCase() === 'true';
+        return value;
+    })
+    isHighway?: boolean;
 }
