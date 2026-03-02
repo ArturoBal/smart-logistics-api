@@ -22,7 +22,8 @@ import { CommonModule } from './common/common.module';
       }),
       NetworkModule,
       RouteModule,
-      CommonModule],
+      CommonModule,
+      ConfigModule],
   controllers: [],
   providers: [],
 })

@@ -3,7 +3,6 @@ import { OptimizeRouteDto } from './dto/optimize-route.dto';
 import { NetworkCustomRepository } from 'src/network/repositories/network.repository';
 import { findShortestPath } from 'src/common/dijkstra/dijkstra-service';
 import { Network } from 'src/network/entities/network.entity';
-import { PathResult } from 'src/common/interfaces/dijkstra-path-result';
 import { Preference } from './enums/preferences.enum';
 
 @Injectable()
@@ -12,13 +11,13 @@ export class RouteService {
   constructor(
     private readonly networkCustomRepository: NetworkCustomRepository
   ) { }
-  async optimizeEdge(id: string, optimizeRouteDto: OptimizeRouteDto) {
+  async optimizeEdge(id: number, optimizeRouteDto: OptimizeRouteDto) {
     const { originNodeId, destinationNodeId, preference = Preference.SHORTEST, avoidHighways } = optimizeRouteDto;
 
     const network = await this.networkCustomRepository.findOneBy({ id });
 
     if (!network) {
-      this.logger.error(`Failed to find graph with id ${id} not found`);
+      this.logger.error(`Failed to find network with id ${id} not found`);
       throw new NotFoundException(`Network not found`);
     }
 

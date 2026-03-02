@@ -17,7 +17,7 @@ export class NetworkService {
     }
   }
 
-  async findGraph(id: string) {
+  async findGraph(id: number) {
     const graph = await this.networkRepository.findOne({ where: { id } });
     if (!graph) {
       this.logger.error(`Failed to find graph with id ${id} not found`);
