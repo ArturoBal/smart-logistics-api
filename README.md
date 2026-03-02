@@ -163,19 +163,45 @@ This will execute all unit tests, particularly those focused on the core routing
 The project is organized into the following key directories and files:
 ```
 src/
-├── controllers/        # API route handlers
-├── services/           # Business logic and algorithm implementation
-├── entities/           # Database models/entities
-├── migrations/         # Database migration files
-├── dtos/               # Data Transfer Objects for request/response validation
-├── utils/              # Utility functions and helpers
-├── app.ts              # Main application entry point
-├── server.ts           # Server setup and configuration
-├── swagger.ts          # Swagger documentation setup
-├── tests/              # Unit tests for the application
-├── .env                # Environment variables configuration
-├── package.json        # Project dependencies and scripts
-├── tsconfig.json       # TypeScript configuration
-└── README.md           # Project documentation and instructions
+├── app.module.ts            # Main NestJS application module
+├── main.ts                  # Application entry point
+├── common/                  # Shared modules and utilities
+│   ├── common.module.ts
+│   ├── dijkstra/            # Dijkstra algorithm implementation
+│   │   └── dijkstra-service.ts
+│   └── interfaces/          # Shared interfaces
+│       └── dijkstra-path-result.ts
+├── config/                  # Configuration modules
+│   ├── config.module.ts
+│   └── envs.ts
+├── migrations/              # Database migration files
+│   └── 1772487145541-InitialMigration.ts
+├── network/                 # Network (graph) management
+│   ├── network.controller.ts
+│   ├── network.module.ts
+│   ├── network.service.ts
+│   ├── network.service.spec.ts
+│   ├── dto/
+│   │   ├── create-edge-request.dto.ts
+│   │   └── create-network-request.dto.ts
+│   ├── entities/
+│   │   └── network.entity.ts
+│   ├── repositories/
+│   │   └── network.repository.ts
+│   └── types/
+│       └── edges.types.ts
+├── route/                   # Route optimization
+│   ├── route.controller.ts
+│   ├── route.module.ts
+│   ├── route.service.ts
+│   ├── route.service.spec.ts
+│   ├── dto/
+│   │   └── optimize-route-request.dto.ts
+│   ├── entities/
+│   │   └── route.entity.ts # Not used but can be created for future persistence of route calculations
+│   └── enums/
+│       └── preferences.enum.ts
+└── test/
+    └── smart-logistics.e2e-spec.ts
 ```
 This structure promotes separation of concerns, making it easier to maintain and scale the application as needed. Each directory has a specific role, ensuring that the codebase remains organized and manageable.
