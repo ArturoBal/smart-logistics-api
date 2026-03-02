@@ -15,12 +15,12 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Task Management API')
-    .setDescription('API for managing tasks with user assignments, filtering, pagination, and analytics.')
+    .setTitle('Smart Logistics API')
+    .setDescription('API for managing smart logistics operations')
     .setVersion('1.0')
     .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, documentFactory);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(envs.apiPort ?? 3000);
 }

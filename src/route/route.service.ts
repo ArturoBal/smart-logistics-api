@@ -1,5 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { OptimizeRouteDto } from './dto/optimize-route.dto';
+import { OptimizeRouteDto } from './dto/optimize-route-request.dto';
 import { NetworkCustomRepository } from 'src/network/repositories/network.repository';
 import { findShortestPath } from 'src/common/dijkstra/dijkstra-service';
 import { Network } from 'src/network/entities/network.entity';

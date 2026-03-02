@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RouteService } from './route.service';
 import { NetworkCustomRepository } from 'src/network/repositories/network.repository';
 import { Preference } from './enums/preferences.enum';
-import { OptimizeRouteDto } from './dto/optimize-route.dto';
+import { OptimizeRouteDto } from './dto/optimize-route-request.dto';
 import { NotFoundException } from '@nestjs/common';
 
 describe('RouteService', () => {

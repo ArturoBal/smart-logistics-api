@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
-import { CreateGraphDto } from './dto/create-network.dto';
+import { CreateGraphDto } from './dto/create-network-request.dto';
 import { NetworkCustomRepository } from './repositories/network.repository';
 
 @Injectable()
@@ -7,10 +7,10 @@ export class NetworkService {
   private readonly logger = new Logger('NetworkService')
   constructor(private readonly networkRepository: NetworkCustomRepository) { }
 
-  createGraph(CreateGraphDto: CreateGraphDto) {
-    const { edges } = CreateGraphDto;
+  async createGraph(createGraphDto: CreateGraphDto) {
+    const { edges } = createGraphDto;
     try {
-      return this.networkRepository.createGraph(edges);
+      return await this.networkRepository.createGraph(edges);
     } catch (error) {
       this.logger.error('Failed to create graph', error.message);
       throw new InternalServerErrorException('Failed to create graph');
