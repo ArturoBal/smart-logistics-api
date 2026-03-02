@@ -1,6 +1,6 @@
 
 import { Transform } from "class-transformer";
-import { IsBoolean, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsPositive, IsString, MaxLength, Min, MinLength } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class EdgeDto {
@@ -11,6 +11,9 @@ export class EdgeDto {
     })
     @IsNotEmpty()
     @IsString()
+    @MinLength(1)
+    @MaxLength(1)
+    @Transform(({ value }) => value.toUpperCase())
     from: string;
 
     @ApiProperty({
@@ -19,6 +22,9 @@ export class EdgeDto {
     })
     @IsNotEmpty()
     @IsString()
+    @MinLength(1)
+    @MaxLength(1)
+    @Transform(({ value }) => value.toUpperCase())
     to: string;
 
     @ApiProperty({

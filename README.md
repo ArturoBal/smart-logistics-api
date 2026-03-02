@@ -119,13 +119,15 @@ To set up and run the Smart Logistics Routing API, follow these steps:
 4. **Initialize Docker to create database:**
     ```bash
     docker-compose up -d
+    or
+    docker compose up
     ```
     
 5.  **Run Migration to initialize database schema:**
     ```bash 
-    yarn typeorm migration:run
+    yarn typeorm:migration:run
     or
-    npm run typeorm migration:run
+    npm run typeorm:migration:run
     ```
 
 6.  **Start the API:**

@@ -1,4 +1,4 @@
-import { IsBoolean, IsEnum, IsOptional, IsString, MinLength } from "class-validator";
+import { IsBoolean, IsEnum, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
 import { Preference } from "../enums/preferences.enum";
 import { Transform } from "class-transformer";
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -11,6 +11,7 @@ export class OptimizeRouteDto {
     })
     @IsString()
     @MinLength(1)
+    @MaxLength(1)
     @Transform(({ value }) => value.toUpperCase())
     originNodeId: string;
 
@@ -20,6 +21,7 @@ export class OptimizeRouteDto {
     })
     @IsString()
     @MinLength(1)
+    @MaxLength(1)
     @Transform(({ value }) => value.toUpperCase())
     destinationNodeId: string;
 
