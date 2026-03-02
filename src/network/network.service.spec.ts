@@ -36,18 +36,18 @@ describe('NetworkService', () => {
   });
 
   describe('createGraph', () => {
-    it('should call repository and return result', () => {
+    it('should call repository and return result', async () => {
       const dto = { edges: [{ from: 'A', to: 'B', distance: 10, time: 5, isHighway: true }] };
       const result = { id: 1, edges: dto.edges };
-      networkRepository.createGraph.mockReturnValue(result);
-      expect(service.createGraph(dto)).toBe(result);
+      networkRepository.createGraph.mockResolvedValue(result);
+      await expect(service.createGraph(dto)).resolves.toEqual(result);
       expect(networkRepository.createGraph).toHaveBeenCalledWith(dto.edges);
     });
 
-    it('should throw InternalServerErrorException on error', () => {
+    it('should throw InternalServerErrorException on error', async () => {
       const dto = { edges: [] };
       networkRepository.createGraph.mockImplementation(() => { throw new Error('fail'); });
-      expect(() => service.createGraph(dto)).toThrow(InternalServerErrorException);
+      await expect(service.createGraph(dto)).rejects.toThrow(InternalServerErrorException);
     });
   });
 
