@@ -116,12 +116,18 @@ To set up and run the Smart Logistics Routing API, follow these steps:
     or
     npm install
     ```
+
+Note: Ensure you have Docker installed and running on your machine. This command will start a PostgreSQL database container with the credentials specified in the `.env` file.
+
+
 4. **Initialize Docker to create database:**
     ```bash
     docker-compose up -d
     or
     docker compose up
     ```
+
+Note: Ensure that the database is up and running before proceeding to the next step. You can check the status of the Docker container with `docker ps` and look for the PostgreSQL container.
     
 5.  **Run Migration to initialize database schema:**
     ```bash 
