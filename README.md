@@ -88,3 +88,86 @@ The expected delivery method for this project is as follows:
 4.  **Notification:** Notify the reviewer that the code is ready and providing the link to the repository or perform an invitation to your repository.
 
 ***Please DO NOT submit the code as a zip file or a Pull Request (PR) to the original repository.*** This process allows us to review your commit history and development workflow directly.
+
+## ✅ Project Setup & Running Instructions
+
+To set up and run the Smart Logistics Routing API, follow these steps:
+1.  **Clone the Repository:**
+    ```bash
+    git clone https://github.com/ArturoBal/smart-logistics-api.git
+    cd smart-logistics-api
+    ```
+2.  **Configure Environment Variables:**
+    Create a `.env` file in the root directory and add the necessary environment variables shown below.
+    ```env
+    API_PORT=3001
+
+    DB_HOST=localhost
+    DB_PORT=5432
+    DB_USERNAME=postgres
+    DB_NAME=smart-logistics-db
+    DB_PASSWORD=s3cr3tP@ssw0rd
+    DB_SYNCHRONIZE=false
+    ```
+
+3.  **Install Dependencies:**
+    ```bash
+    yarn install
+    or
+    npm install
+    ```
+4. **Initialize Docker to create database:**
+    ```bash
+    docker-compose up -d
+    ```
+    
+5.  **Run Migration to initialize database schema:**
+    ```bash 
+    yarn typeorm migration:run
+    or
+    npm run typeorm migration:run
+    ```
+
+6.  **Start the API:**
+    ```bash
+    yarn start
+    or
+    npm start
+    ```
+
+7.  **Access the API Documentation:**
+    Open your browser and navigate to `http://localhost:3001/docs` to view the Swagger UI documentation for the API.
+
+## 🧪 Running Tests
+
+To run the tests for the Smart Logistics Routing API, use the following commands:
+
+```bash
+yarn test
+or
+npm test
+```
+
+This will execute all unit tests, particularly those focused on the core routing algorithm, and provide a report of the test results.
+
+## 📂 Project Structure
+
+The project is organized into the following key directories and files:
+```
+src/
+├── controllers/        # API route handlers
+├── services/           # Business logic and algorithm implementation
+├── entities/           # Database models/entities
+├── migrations/         # Database migration files
+├── dtos/               # Data Transfer Objects for request/response validation
+├── utils/              # Utility functions and helpers
+├── app.ts              # Main application entry point
+├── server.ts           # Server setup and configuration
+├── swagger.ts          # Swagger documentation setup
+├── tests/              # Unit tests for the application
+├── .env                # Environment variables configuration
+├── package.json        # Project dependencies and scripts
+├── tsconfig.json       # TypeScript configuration
+└── README.md           # Project documentation and instructions
+```
+This structure promotes separation of concerns, making it easier to maintain and scale the application as needed. Each directory has a specific role, ensuring that the codebase remains organized and manageable.
