@@ -204,4 +204,4 @@ src/
 └── test/
     └── smart-logistics.e2e-spec.ts
 ```
-This structure promotes separation of concerns, making it easier to maintain and scale the application as needed. Each directory has a specific role, ensuring that the codebase remains organized and manageable.
+ This structure organizes the code into feature-based modules (e.g., `network`, `route`) and separates concerns such as controllers, services, DTOs, entities, and repositories. The `common` directory contains shared logic and interfaces that can be reused across different modules.
